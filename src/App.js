@@ -15,7 +15,6 @@ function App() {
   const suggestionsRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Carregar lista de todos os Pokémon ao montar o componente
   useEffect(() => {
     const fetchPokemonList = async () => {
       try {
@@ -30,7 +29,6 @@ function App() {
     fetchPokemonList();
   }, []);
 
-  // Fechar sugestões ao clicar fora
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (suggestionsRef.current && !suggestionsRef.current.contains(event.target) && 
@@ -60,20 +58,17 @@ function App() {
       const data = await response.json();
       setPokemon(data);
       
-      // Atualizar cor de fundo baseado no tipo principal do Pokémon
       if (data.types && data.types.length > 0) {
         const primaryType = data.types[0].type.name;
         setBackgroundGradient(getTypeGradient(primaryType));
       }
       
-      // Adicionar ao histórico
       if (!searchHistory.includes(name.toLowerCase())) {
         setSearchHistory([name.toLowerCase(), ...searchHistory.slice(0, 9)]);
       }
     } catch (err) {
       setError(err.message);
       setPokemon(null);
-      // Resetar para cor padrão em caso de erro
       setBackgroundGradient('linear-gradient(135deg, #667eea 0%, #764ba2 100%)');
     } finally {
       setLoading(false);
